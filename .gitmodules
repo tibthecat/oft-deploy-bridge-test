@@ -1,0 +1,3 @@
+[submodule "node_modules/.pnpm/@layerzerolabs+toolbox-foundry@0.1.12/node_modules/@layerzerolabs/toolbox-foundry/lib/openzeppelin-contracts"]
+	path = node_modules/.pnpm/@layerzerolabs+toolbox-foundry@0.1.12/node_modules/@layerzerolabs/toolbox-foundry/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
