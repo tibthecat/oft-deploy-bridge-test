@@ -1,0 +1,26 @@
+{	
+    "11155111": {
+      "isTestNet": true,
+      "endpoint_master": "0x6EDCE65403992e310A62460808c4b910D972f10f",
+      "numa_address":"0xf478f8dedebe67cc095693a9d6778deb3fb67ffe",
+      "satellite_endpoint":40231,
+      "vault":"0xcf0142346d487308dfd3c56d8bf889ad8c3ad0ca",
+      "lst":"0x1521c67fdfdb670fa21407ebdbbda5f41591646c",
+      "satellite_chainId":421614
+    },
+    "42161": {
+      "isTestNet": false,
+      "endpoint": ""
+
+    },
+    "421614": {
+        "isTestNet": false,
+        "endpoint": "0x6EDCE65403992e310A62460808c4b910D972f10f",      
+        "master_endpoint":40161,
+        "vault":"0x3a99f41eb509bfc08c7709b5922a755d69fef323",
+        "lst":"0x26e4b4f3037c8973d2fe20235f346afae00cdae0",
+        "master_chainId":11155111
+      
+      }
+  }
+

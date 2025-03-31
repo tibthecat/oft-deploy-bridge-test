@@ -1,0 +1,61 @@
+deployment chain satellite
+
+1) deploy numaOFT
+OK
+2) deploy numa protocol linked with numaOFT
+
+- script deploy 01
+OK
+
+- script deploy 02
+    - fees
+    - supply & balance
+        - handle supply and price/initialize vault price
+            -> mint 1000 numa to 0 address and send eq of 1000 numa in reth to vault
+            -> other?
+OK 
+
+TODO: double check numatolst et lsttonuma les prix devraient matcher arbitrum (a part qu'on n'a pas de buyfee pid ni sellfee pid)
+
+- set minter as numa minter
+OK via arbiscan
+
+- unpause vault
+OK test buy & sell
+
+- deploy lending protocol
+TODO
+- deploy printer
+TODO: test mint synth?
+
+- MAINNET ONLY: deploy printer so that we have buy fee PID: need a pool USDC etc...
+3) deploy bridge contract
+OK
+paused by default
+
+deployment master
+
+1) deploy adapter
+OK
+2) deploy removeFromVaultManager supply
+pas possible car pas la fonction sur sepolia --> todo: triple check le code + add test
+
+3) deploy bridge
+OK
+
+
+wiring&unpause
+
+
+wire contracts
+
+OK
+
+unpause
+
+
+
+test:
+
+- bridge 2 directions
+- check supply removed from vaultmanager

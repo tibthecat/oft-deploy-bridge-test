@@ -1,5 +1,7 @@
 [profile.default]
-solc-version = '0.8.22'
+fs_permissions = [{ access = "read-write", path = "./"}]
+solc-version = '0.8.20'
+auto_detect_solc = false
 src = 'contracts'
 evm_version = 'shanghai'
 out = 'out'
@@ -30,3 +32,13 @@ remappings = [
 
 [fuzz]
 runs = 1000
+
+[rpc_endpoints]
+sepolia = "${URL2}"
+sepolia-arbitrum = "${RPC_URL_SEPOLIAARBI}"
+
+
+[etherscan]
+sepolia = { key = "${ETHERSCAN_API_KEY}" }
+arbitrum = { key = "${ARBISCAN_API_KEY}" }
+sepolia-arbitrum = { key = "${ARBISCAN_API_KEY}" }
