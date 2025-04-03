@@ -1,66 +1,21 @@
  TODO: audit twitter
 
  - q: j'utilise la config DVN/endpoint par defaut pour le wiring, c'est OK? quels sont les risques?
- - q addExecutorLzReceiveOption(200000
  
 
 
  *************************************************************************************************
- forge script .\scripts\DeploymentFoundry\DeployBridgeSatellite.sol:DeployBridgeSatellite --rpc-url 'https://arbitrum-sepolia.infura.io/v3/21SStaFKG2c0OfF1SAuz4QFWfAq' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "7QJ5HEMUC13QIS29HDZGVMXYSW17EF56VK"
-  
-
-
-   forge script .\scripts\DeploymentFoundry\03_DeployNumaOFTAdapter.s.sol:03_DeployNumaOFTAdapter --rpc-url 'https://sepolia.infura.io/v3/916abfc599974040abfd299a6889c49d' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "HQMWJJVJXBXZ9EDSNUAAHRPX7YGYA537IC"
-
-
-
-
+forge script .\scripts\DeploymentFoundry\DeployBridgeSatellite.sol:DeployBridgeSatellite --rpc-url 'https://arbitrum-sepolia.infura.io/v3/21SStaFKG2c0OfF1SAuz4QFWfAq' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "7QJ5HEMUC13QIS29HDZGVMXYSW17EF56VK"
+forge script .\scripts\DeploymentFoundry\03_DeployNumaOFTAdapter.s.sol:03_DeployNumaOFTAdapter --rpc-url 'https://sepolia.infura.io/v3/916abfc599974040abfd299a6889c49d' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "HQMWJJVJXBXZ9EDSNUAAHRPX7YGYA537IC"
 forge script .\scripts\DeploymentFoundry\07_AdapterRemoveFromSupply.sol:AdapterRemoveFromSupply --rpc-url 'https://sepolia.infura.io/v3/916abfc599974040abfd299a6889c49d' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "HQMWJJVJXBXZ9EDSNUAAHRPX7YGYA537IC"
-
 forge script .\scripts\DeploymentFoundry\04_DeployBridgeMaster.s.sol:DeployBridgeMaster --rpc-url 'https://sepolia.infura.io/v3/916abfc599974040abfd299a6889c49d' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "HQMWJJVJXBXZ9EDSNUAAHRPX7YGYA537IC"
-
 forge script .\scripts\DeploymentFoundry\05_WireOFT.s.sol:WireOFT --rpc-url 'https://arbitrum-sepolia.infura.io/v3/21SStaFKG2c0OfF1SAuz4QFWfAq' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "7QJ5HEMUC13QIS29HDZGVMXYSW17EF56VK"
 forge script .\scripts\DeploymentFoundry\06_WireOFTAdapter.s.sol:WireOFTAdapter --rpc-url 'https://sepolia.infura.io/v3/916abfc599974040abfd299a6889c49d' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "HQMWJJVJXBXZ9EDSNUAAHRPX7YGYA537IC"
+forge script .\scripts\DeploymentFoundry\02_DeployBridgeSatellite.s.sol:DeployBridgeSatellite --rpc-url 'https://arbitrum-sepolia.infura.io/v3/21SStaFKG2c0OfF1SAuz4QFWfAq' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "7QJ5HEMUC13QIS29HDZGVMXYSW17EF56VK"  
+forge script .\scripts\DeploymentFoundry\04_DeployBridgeMaster.s.sol:DeployBridgeMaster --rpc-url 'https://sepolia.infura.io/v3/916abfc599974040abfd299a6889c49d' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "HQMWJJVJXBXZ9EDSNUAAHRPX7YGYA537IC"
 
 
- forge script .\scripts\DeploymentFoundry\02_DeployBridgeSatellite.s.sol:DeployBridgeSatellite --rpc-url 'https://arbitrum-sepolia.infura.io/v3/21SStaFKG2c0OfF1SAuz4QFWfAq' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "7QJ5HEMUC13QIS29HDZGVMXYSW17EF56VK"
-  
-
-
-
-EN COURS 
-
-
-start deploy sepolia/Arbi sepolia + testing
-
-
-
-lire https://docs.layerzero.network/v2/developers/evm/oft/quickstart
-
-
-finish tests
-
-
-STATUS:
-
-
-tests nearly over
-starting doing deployment scripts and testing on sepolia sepolia arbitrum
-
-
-
-**********************
-
-
- test testnets manuel et foundry test sur forks et tokens deployés (si possible)
-
- deploy scripts + remove supply dans vaultmanager
- 
- test testnet
-
-
-
- write tests
+tests to write
 
 
     -> test oft/oftadapter ownership, and only owner can add bridges to wl
@@ -73,76 +28,23 @@ starting doing deployment scripts and testing on sepolia sepolia arbitrum
     -> test limits on volume limit per tx deja fait
     -> test numaOFT with whole protocol, vault, mint from printer, burn/mint from vault
     -> test refund
-    -> autre
-
-
-
-- (???) voir les scripts de transfer: quotesend/options builder 
-
-- dev (cf tg)
-
-    - deploy scripts for mainnets/testnets wiring etc...
-    - dev refund address
-    - test revert TODO test catch revert
+    
     - voir si je garde l'override de lzreceive ou si j'override le credit, peut-être plus clean
-
-********************************** NOTES DIVERSES
-
 
 
 
 TODO
 - emit an event when numa are not minted
 - more events
-
-
-- write tests
-- test on testnet
-- dble check configs DVN, fees, builderoptions etc...
-
+- finish tests
+- test on testnet, TODO check arbi --> sepolia
+- test testnets foundry test sur forks et tokens deployés (si possible)
+- deploy scripts + remove supply dans vaultmanager
 - clean & remove logs
 
 
 ******************************************
 docs
 https://docs.layerzero.network/v2/developers/evm/create-lz-oapp/start
-            Oapp deploy OK Manque le verify
-            wiring ok mais j'ai utilisé une config sans aucun paramètre de configuration
-
-
 https://docs.layerzero.network/v2/developers/evm/configuration/dvn-executor-config
-
-DOC A VOIR
-
-
-
-
-
-    cf https://docs.layerzero.network/v2/developers/evm/oft/quickstart
-
-    --> READ ALL ARTICLE IN DEPTH!!!!  (Token Transfer Precision etc...)
-    EndpointV2.setSendLibrary(aOFT, bEid, newLib)
-EndpointV2.setReceiveLibrary(aOFT, bEid, newLib, gracePeriod)
-EndpointV2.setReceiveLibraryTimeout(aOFT, bEid, lib, gracePeriod)
-EndpointV2.setConfig(aOFT, sendLibrary, sendConfig)
-EndpointV2.setConfig(aOFT, receiveLibrary, receiveConfig)
-EndpointV2.setDelegate(delegate)
-
-+ READ
-https://github.com/LayerZero-Labs/LayerZero-v2/tree/main
-
-
-TODO
- voir config et si deploy DVN necessaire + les DVN au niveau du wiring script, decimals
- les fees, decimals, options builder au niveau du transfer, addExecutorLzReceiveOption
- paramètres de config dans le wiring? les checks 1 par 1?
-
-
-CHECK CODE: options, fees, wiring, config 
-
-- const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toBytes();
-- wiring and enforceOptions (cf  https://github.com/westonnelson/LayerZero_V2_OFT_Example_Deployments)
-
-
-TODOS CONFIG 
-
+https://docs.layerzero.network/v2/developers/evm/oft/quickstart
