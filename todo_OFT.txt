@@ -23,23 +23,19 @@ forge script .\scripts\DeploymentFoundry\05_WireOFT.s.sol:WireOFT --rpc-url 'htt
 forge script .\scripts\DeploymentFoundry\06_WireOFTAdapter.s.sol:WireOFTAdapter --rpc-url 'https://sepolia.infura.io/v3/916abfc599974040abfd299a6889c49d' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "HQMWJJVJXBXZ9EDSNUAAHRPX7YGYA537IC"
 
 
+ forge script .\scripts\DeploymentFoundry\02_DeployBridgeSatellite.s.sol:DeployBridgeSatellite --rpc-url 'https://arbitrum-sepolia.infura.io/v3/21SStaFKG2c0OfF1SAuz4QFWfAq' --broadcast -vv --ffi --sender 0xe8153Afbe4739D4477C1fF86a26Ab9085C4eDC69 --private-key 0xe71401816181e3dfaf484d06034b23349a5cd63b22fc4df2c10184e0b622d65b --verify --etherscan-api-key "7QJ5HEMUC13QIS29HDZGVMXYSW17EF56VK"
+  
+
+
 
 EN COURS 
 
 
 start deploy sepolia/Arbi sepolia + testing
-clean code
-    - code
-    - tests
-    - deploy scripts
-    - github push
+
 
 
 lire https://docs.layerzero.network/v2/developers/evm/oft/quickstart
-
-
-
-push github numa
 
 
 finish tests

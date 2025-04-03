@@ -133,6 +133,9 @@ contract BridgeTest is TestHelperOz5 {
         numaBridgeMaster1.setWhitelistedEndpoint(bEid,true);
         numaBridgeSatellite2.setWhitelistedEndpoint(aEid,true);
 
+        numaBridgeMaster1.setGasLimitEndpoint(bEid,500_000);
+        numaBridgeSatellite2.setGasLimitEndpoint(aEid,500_000);
+
         // whitelist bridges
         numaOFTAdapter1.setAllowedContract(address(numaBridgeMaster1),true);
         numaOFT2.setAllowedContract(address(numaBridgeSatellite2),true);
@@ -421,16 +424,15 @@ contract BridgeTest is TestHelperOz5 {
     function test_bridge_min() public {
 
         vm.startPrank(userA);
-        uint amount = 1e12;
+        uint amount = 1e16;
         bridgeFrom1to2(amount);
 
 
-        amount = 1e11;
+        amount = 1e15;
         
         lst1.approve(address(numaBridgeMaster1),amount);
 
         // fees
-        vm.expectRevert();
         uint feesNative = numaBridgeMaster1.estimateFee(amount,userA,bEid);
  
 
@@ -441,7 +443,6 @@ contract BridgeTest is TestHelperOz5 {
                
         lst2.approve(address(numaBridgeSatellite2),amount);
 
-        vm.expectRevert();
         feesNative = numaBridgeSatellite2.estimateFee(amount,userA,aEid);
         
         vm.expectRevert();

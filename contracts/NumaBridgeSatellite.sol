@@ -31,6 +31,8 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
         uint256 usedVolume;
     }
 
+    uint128 public defaultGasLimit = 6_000_000;
+
     RateLimit public rateLimit;
     
     uint256 public windowDuration = 1 hours; // e.g., 1 hour = 3600 seconds 
@@ -47,10 +49,14 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
     IERC20 immutable lstToken;
 
     mapping(uint32 => bool) public whitelistedEndpoints;
+    mapping(uint32 => uint128 gasLimit) public getGasLimit;
 
-    uint256 public constant MIN = 1000;
+
+    //uint256 public constant MIN = 1000;
+    uint256 public constant MIN = 1e15;// 0.001 numa
 
     event EndpointWhitelisted(uint32 indexed endpointId, bool whitelisted);
+    event GasLimitSet(uint32 indexed endpointId, uint128 gasLimit);
 
     function addressToBytes32(address _addr) internal pure returns (bytes32) {
         return bytes32(uint256(uint160(_addr)));
@@ -70,10 +76,25 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
         _;
     }
 
+
+    /**
+     * @dev useful if we migrate to a new bridge contract. We need to set that value to the value of the previous contract
+     */
+    function setBridgeableAmount(uint _amount) external onlyOwner {
+        bridgeableAmount = _amount;
+    }
+
     function setWhitelistedEndpoint(uint32 _endpointId, bool _whitelisted) external onlyOwner {
         whitelistedEndpoints[_endpointId] = _whitelisted;
         emit EndpointWhitelisted(_endpointId, _whitelisted);
     }
+
+    function setGasLimitEndpoint(uint32 _endpointId, uint128 _gasLimit ) external onlyOwner {
+        getGasLimit[_endpointId] = _gasLimit;
+        emit GasLimitSet(_endpointId, _gasLimit);
+    }
+
+
     function updateLimits(uint256 _windowDuration, uint256 _maxVolume,uint _maxVolumeTx) external onlyOwner{
         windowDuration = _windowDuration;
         maxVolume = _maxVolume;
@@ -95,16 +116,37 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
         _unpause();
     }
 
+    function getMinAmountBridged(uint _inputAmount) public view returns (uint256) 
+    {
+        uint result = (_inputAmount/1e12) * 1e12;// 12 because shared decimals is 6
+        return result;
+    }
+
+    
+    function getGasLimitFct(uint32 _dstEid) public view returns (uint128) {
+
+        uint128 gasLimit = getGasLimit[_dstEid];
+        if (gasLimit == 0)
+        {
+            gasLimit = defaultGasLimit;
+        }
+        return gasLimit;
+        
+    }
+
+
+
     function estimateFee(uint _inputAmount,address _receiver,
         uint32 _dstEid) external view returns (uint)
     {
         uint _numaOut = vault.lstToNuma(_inputAmount);
-        bytes memory options = OptionsBuilder.newOptions().addExecutorLzReceiveOption(200000, 0);
+        uint128 gasLimit = getGasLimitFct(_dstEid);
+        bytes memory options = OptionsBuilder.newOptions().addExecutorLzReceiveOption(gasLimit, 0);
         SendParam memory sendParam = SendParam(
             _dstEid,
             addressToBytes32(_receiver),
             _numaOut,
-            _numaOut,
+            getMinAmountBridged(_numaOut),
             options,
             "", 
             ""
@@ -158,13 +200,14 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
 
         // same MIN as vault, because we don't want a revert on destination chain
         require(_numaOut > MIN,"not enough to bridge");
-     
-        bytes memory options = OptionsBuilder.newOptions().addExecutorLzReceiveOption(200000, 0);
+
+        uint128 gasLimit = getGasLimitFct(_dstEid);     
+        bytes memory options = OptionsBuilder.newOptions().addExecutorLzReceiveOption(gasLimit, 0);
         SendParam memory sendParam = SendParam(
             _dstEid,
             addressToBytes32(_receiver),
             _numaOut,
-            _numaOut,
+            getMinAmountBridged(_numaOut),
             options,
             "", 
             ""
@@ -175,10 +218,14 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
         (MessagingReceipt memory msgReceipt, OFTReceipt memory oftReceipt) = numaOFT.send{ value: fee.nativeFee }(
             sendParam,
             fee,
-            payable(address(this))
+            payable(msg.sender)// refund address is msg.sender
         );
 
-
+        //refund fees
+        uint excess = msg.value - fee.nativeFee;
+        if (excess > 0) {
+            payable(msg.sender).transfer(excess);
+        }
     }
 
      function onReceive(
@@ -251,5 +298,25 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
             return false;
         }
         return true;
+    }
+    /**
+     * @dev Withdraws ERC20 tokens or native tokens (ETH).
+     * @param _token Address of the ERC20 token to withdraw. Use address(0) for native tokens (ETH).
+     * @param _amount Amount to withdraw.
+     */
+    function withdraw(address _token, uint256 _amount) external onlyOwner {
+        require(_amount > 0, "Invalid amount");
+
+        if (_token == address(0)) {
+            // Withdraw native tokens (ETH)
+            require(address(this).balance >= _amount, "Insufficient balance");
+            (bool success, ) = payable(owner()).call{value: _amount}("");
+            require(success, "ETH transfer failed");
+        } else {
+            // Withdraw ERC20 tokens
+            require(IERC20(_token).balanceOf(address(this)) >= _amount, "Insufficient token balance");
+            bool success = IERC20(_token).transfer(owner(), _amount);
+            require(success, "Token transfer failed");
+        }
     }
 }
