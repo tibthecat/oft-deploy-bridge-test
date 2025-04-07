@@ -57,6 +57,9 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
 
     event EndpointWhitelisted(uint32 indexed endpointId, bool whitelisted);
     event GasLimitSet(uint32 indexed endpointId, uint128 gasLimit);
+    event NumaNotSold(uint indexed amount);
+    event NumaSold(uint indexed amount,uint indexed lstAmount);
+    event NumaBridged(uint32 indexed endpointId,uint indexed amount);
 
     function addressToBytes32(address _addr) internal pure returns (bytes32) {
         return bytes32(uint256(uint160(_addr)));
@@ -226,6 +229,7 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
         if (excess > 0) {
             payable(msg.sender).transfer(excess);
         }
+        emit NumaBridged(_dstEid,_numaOut);
     }
 
      function onReceive(
@@ -249,6 +253,7 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
             IERC20(address(numaOFT)).approve(address(vault), _numaAmount);
             // catching reverts just in case
             try vault.sell(_numaAmount, _minLstAmount, _receiver) returns (uint256 lstOut) {
+                emit NumaSold(_numaAmount,lstOut);
                 return lstOut;  // Assign inside the success block
             } 
             catch Error(string memory reason) 
@@ -270,6 +275,7 @@ contract NumaBridgeSatellite is Ownable2Step, Pausable, INumaBridgeReceiver
                 IERC20(address(numaOFT)),            
                 _receiver,
                 _numaAmount);
+            emit NumaNotSold(_numaAmount);
             return 0;
         }
         
