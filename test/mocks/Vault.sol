@@ -11,7 +11,7 @@ import "forge-std/console2.sol";
 
 contract NumaVaultMock {
 
-
+    bool forceRevert = false;
     Numa public immutable numa;
     Lst public immutable lst;
     NumaMinter public immutable minter;
@@ -49,6 +49,13 @@ contract NumaVaultMock {
 
     function sell(uint amount, uint min, address recipient) external returns (uint)
     {
+        if (forceRevert)
+        {
+            // OK
+            //revert();
+
+            numa.callRevert();
+        }
         console2.log("burning token ",address(numa));
         numa.burnFrom(msg.sender, amount);// TODO revert test 1
         //lst.mint(recipient, amount);
@@ -71,5 +78,13 @@ contract NumaVaultMock {
         return amount;
 
     }
+
+
+    function setForceRevert(bool _revert) external
+    {
+        forceRevert = _revert;
+
+    }
+
 
 }

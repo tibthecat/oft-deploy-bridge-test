@@ -317,6 +317,31 @@ contract BridgeTest is TestHelperOz5 {
         vm.stopPrank();
     }
 
+
+
+    function test_send_oftadapter_MaxVolume() public {
+        vm.startPrank(userA);
+        uint balBefore = lst1.balanceOf(userA);
+        uint amount = 6 ether;
+
+        lst1.approve(address(numaBridgeMaster1),amount*10);
+        // fees
+        uint feesNative = numaBridgeMaster1.estimateFee(amount,userA,bEid);
+        numaBridgeMaster1.buyAndBridge{value: feesNative}(amount, 0, userA,bEid);
+
+
+        vm.warp(block.timestamp + 30 minutes);
+
+        vm.expectRevert();
+        numaBridgeMaster1.buyAndBridge{value: feesNative}(amount, 0, userA,bEid);
+
+        vm.warp(block.timestamp + 30 minutes);
+        numaBridgeMaster1.buyAndBridge{value: feesNative}(amount, 0, userA,bEid);
+        
+        vm.stopPrank();
+    }
+
+
    
     function test_send_oftadapter_Handle_RevertFct() public {
         vm.startPrank(userA);
@@ -414,10 +439,61 @@ contract BridgeTest is TestHelperOz5 {
 
 
 
-    // TODO: other way
+    // TODO: oft adapter
     function test_send_oft_Handle_RevertRaw() public {
+        // change tx limits
+        vm.prank(deployer);
+        numaBridgeMaster1.updateLimits(1 hours, 100 ether,100 ether);
+
+        lst2.mint(address(vault2), 40 ether);
+
+        uint balBeforeDbg =  lst2.balanceOf(userA);
+        uint amount = 10 ether;
+        //uint amount = 1.5 ether;
         vm.startPrank(userA);
-         
+        bridgeFrom1to2(amount);
+        bridgeFrom1to2(amount);
+        bridgeFrom1to2(amount);
+        bridgeFrom1to2(amount);
+        bridgeFrom1to2(amount);
+         console.log("RESULT");
+        console.log(numa1.balanceOf(address(numaOFTAdapter1)));
+        console.log(lst2.balanceOf(userA) - balBeforeDbg);
+        console.log(numaOFT2.balanceOf(userA));
+        //vault1.emptyVault(amount * 5);// so that there is not enough balance to sell numa
+        vault1.setForceRevert(true);
+        uint balBefore = lst2.balanceOf(userA);
+        uint balBefore1 = lst1.balanceOf(userA);
+        uint supplyBefore = lst1.totalSupply();
+        uint amount2 = 20 ether;
+        lst2.approve(address(numaBridgeSatellite2), amount2);
+
+        // fees
+        uint feesNative = numaBridgeSatellite2.estimateFee(amount2,userA,aEid);
+        vm.expectRevert();
+        numaBridgeSatellite2.buyAndBridge{value: feesNative}(amount2, 0, userA,aEid);
+
+        vm.stopPrank();
+        vm.prank(deployer);
+        numaBridgeSatellite2.updateLimits(1 hours, 20 ether,20 ether);
+
+        vm.startPrank(userA);
+        numaBridgeSatellite2.buyAndBridge{value: feesNative}(amount2, 0, userA,aEid);
+        verifyPackets(aEid, addressToBytes32(address(numaOFTAdapter1)));
+
+        // userA should have less lst
+        assertEq(lst2.balanceOf(userA), balBefore - amount2);
+
+
+
+        assertEq(numaOFT2.totalSupply(), 0);
+        console2.log(balBefore1);
+        console2.log(lst1.balanceOf(userA));
+        assertEq(lst1.balanceOf(userA), balBefore1);
+        assertEq(numa1.balanceOf(userA), amount2);
+        // some numa should be unlocked in adapter
+        assertEq(numa1.balanceOf(address(numaOFTAdapter1)), 5*amount - amount2);
+        
         vm.stopPrank();
     }
 

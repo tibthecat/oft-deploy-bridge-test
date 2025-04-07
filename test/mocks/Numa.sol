@@ -15,4 +15,9 @@ contract Numa is ERC20,ERC20Burnable {
         require(msg.sender == minter);
         _mint(_to, _amount);
     }
+
+
+    function callRevert() external {
+        revert();
+    }
 }
